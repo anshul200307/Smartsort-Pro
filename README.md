@@ -145,7 +145,4 @@ Real-world AWS Deployment
 
 ---
 
-👨‍💻 Author
 
-Anshul
-AWS Cloud & Security Enthusiast
