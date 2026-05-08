@@ -83,23 +83,23 @@ unknown-documents
 Add screenshots of:
 
 1. Website Home Page
-   (1.png)
+   ![Website](1.png)
 
 
 3. User Filling Upload Form
-
+ ![form filling](2.png)
 
 4. File Uploaded in S3 Folder
-
+ ![s3](invoice.png)
 
 5. DynamoDB Audit Log Entry
-
+ ![Website](dynamodblogs.png)
 
 6. Classification Result on Website
-
+ ![result](Screenshot2026-05-07012131.png)
 
 7. Email Notification Received
-
+![email](email.jpeg)
 
 
 
