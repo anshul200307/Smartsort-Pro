@@ -1,0 +1,172 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SmartSort Pro — AI Classifier</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background: #0f1923; color: white; display: flex; align-items: center; justify-content: center; min-height: 100vh; padding: 20px; }
+        .container { background: #1a2634; border-radius: 16px; padding: 30px; width: 100%; max-width: 450px; box-shadow: 0 10px 30px rgba(0,0,0,0.5); border: 1px solid #2a3a4a; }
+        .header { text-align: center; margin-bottom: 25px; }
+        .header h1 { color: #ff9900; font-size: 24px; }
+        .header p { color: #8899aa; font-size: 13px; margin-top: 5px; }
+        .form-group { margin-bottom: 15px; }
+        label { display: block; color: #ff9900; font-size: 12px; margin-bottom: 5px; font-weight: bold; }
+        input { width: 100%; padding: 12px; background: #0f1923; border: 1px solid #2a3a4a; border-radius: 8px; color: white; outline: none; }
+        input:focus { border-color: #ff9900; }
+        .upload-box { border: 2px dashed #ff9900; border-radius: 10px; padding: 20px; text-align: center; cursor: pointer; background: #0f1923; margin-top: 10px; }
+        .upload-box:hover { background: #162233; }
+        .file-info { color: #ff9900; font-size: 12px; margin-top: 10px; font-weight: bold; }
+        .btn { width: 100%; padding: 15px; background: #ff9900; color: #0f1923; border: none; border-radius: 8px; font-weight: bold; cursor: pointer; margin-top: 20px; transition: 0.3s; }
+        .btn:hover { background: #e68800; }
+        .btn:disabled { background: #445566; cursor: not-allowed; }
+        .loading { display: none; text-align: center; margin-top: 15px; color: #ff9900; font-weight: bold; animation: blink 1s infinite; }
+        @keyframes blink { 50% { opacity: 0.5; } }
+        .result { display: none; margin-top: 20px; padding: 15px; background: #0f1923; border-radius: 10px; border-left: 4px solid #ff9900; }
+        .result h3 { font-size: 16px; margin-bottom: 10px; color: #44cc44; }
+        .res-row { display: flex; justify-content: space-between; padding: 8px 0; border-bottom: 1px solid #1e2e3e; font-size: 13px; }
+        .badge { padding: 3px 10px; border-radius: 12px; font-size: 11px; font-weight: bold; text-transform: uppercase; }
+        .image { background: #3366cc; color: white; }
+        .text { background: #33aa33; color: white; }
+        .pii { background: #cc3333; color: white; }
+        .financial { background: #ff9900; color: #0f1923; }
+        .unknown { background: #556677; color: white; }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <div class="header">
+        <h1>🔍 SmartSort Pro</h1>
+        <p>AI-Powered Document Classifier</p>
+    </div>
+
+    <div class="form-group">
+        <label>YOUR NAME</label>
+        <input type="text" id="userName" placeholder="Enter name">
+    </div>
+
+    <div class="form-group">
+        <label>EMAIL ADDRESS</label>
+        <input type="email" id="userEmail" placeholder="verified@email.com">
+    </div>
+
+    <div class="form-group">
+        <label>SELECT DOCUMENT</label>
+        <div class="upload-box" onclick="document.getElementById('fileInput').click()">
+            <span style="font-size: 30px;">📂</span>
+            <p style="font-size: 12px; color: #8899aa;">Click to upload (PDF, JPG, PNG, TXT)</p>
+            <div id="fileStatus" class="file-info"></div>
+        </div>
+        <input type="file" id="fileInput" style="display: none;" onchange="updateFileStatus()">
+    </div>
+
+    <button class="btn" id="classifyBtn" onclick="processDocument()">🚀 START CLASSIFICATION</button>
+
+    <div id="loader" class="loading">AI is analyzing your file...</div>
+
+    <div id="resultBox" class="result">
+        <h3>✅ Analysis Complete!</h3>
+        <div class="res-row"><span>File Name:</span> <span id="outName" style="color: #ff9900;"></span></div>
+        <div class="res-row"><span>Category:</span> <span id="outBadge"></span></div>
+        <div class="res-row"><span>Folder:</span> <span id="outFolder" style="font-family: monospace;"></span></div>
+        <p id="emailNote" style="color: #44cc44; font-size: 11px; margin-top: 10px; text-align: center;">📧 Result sent to your email!</p>
+    </div>
+</div>
+
+<script>
+    // ⚠️ APNA API URL YAHAN DALO ⚠️
+    const API_ENDPOINT = 'https://jz62qw6t47.execute-api.ap-south-1.amazonaws.com/classify';
+
+    function updateFileStatus() {
+        const file = document.getElementById('fileInput').files[0];
+        if (file) {
+            document.getElementById('fileStatus').textContent = "📎 Selected: " + file.name;
+        }
+    }
+
+    async function processDocument() {
+        const name = document.getElementById('userName').value.trim();
+        const email = document.getElementById('userEmail').value.trim();
+        const fileInput = document.getElementById('fileInput');
+        const file = fileInput.files[0];
+
+        if (!name || !email || !file) {
+            alert("Bhai, saari fields bharo pehle!");
+            return;
+        }
+
+        const btn = document.getElementById('classifyBtn');
+        const loader = document.getElementById('loader');
+        const resBox = document.getElementById('resultBox');
+
+        btn.disabled = true;
+        loader.style.display = 'block';
+        resBox.style.display = 'none';
+
+        try {
+            const base64Data = await convertToBase64(file);
+            
+            const response = await fetch(API_ENDPOINT, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({
+                    file_name: file.name,
+                    file_data: base64Data,
+                    user_name: name,
+                    user_email: email
+                })
+            });
+
+            if (!response.ok) throw new Error('Server returned 500/400');
+
+            const result = await response.json();
+            console.log("Success Response:", result);
+            displayResult(file.name, result);
+
+        } catch (error) {
+            console.error("Error Detail:", error);
+            alert("Kuch gadbad hui! Console check karo (F12).");
+        } finally {
+            btn.disabled = false;
+            loader.style.display = 'none';
+        }
+    }
+
+    function convertToBase64(file) {
+        return new Promise((resolve, reject) => {
+            const reader = new FileReader();
+            reader.readAsDataURL(file);
+            reader.onload = () => resolve(reader.result.split(',')[1]);
+            reader.onerror = error => reject(error);
+        });
+    }
+
+    function displayResult(fileName, data) {
+        const resultBox = document.getElementById('resultBox');
+        const outName = document.getElementById('outName');
+        const outBadge = document.getElementById('outBadge');
+        const outFolder = document.getElementById('outFolder');
+
+        const map = {
+            'image-documents': ['IMAGE 🖼️', 'image'],
+            'text-documents': ['TEXT 📄', 'text'],
+            'pii-documents': ['SENSITIVE 🔐', 'pii'],
+            'financial-documents': ['FINANCIAL 💰', 'financial'],
+            'unknown-documents': ['UNKNOWN ❓', 'unknown']
+        };
+
+        // Lambda se jo 'folder' aa raha hai use handle karna
+        const category = data.folder ? data.folder.toLowerCase().trim() : 'unknown-documents';
+        const info = map[category] || map['unknown-documents'];
+
+        outName.textContent = fileName;
+        outBadge.innerHTML = `<span class="badge ${info[1]}">${info[0]}</span>`;
+        outFolder.textContent = category + "/";
+        resultBox.style.display = 'block';
+    }
+</script>
+
+</body>
+</html>
