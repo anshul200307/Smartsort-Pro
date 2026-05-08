@@ -80,9 +80,10 @@ unknown-documents
 
 📸 Project Workflow Screenshots
 
-Add screenshots of:
+
 
 1. Website Home Page
+
    ![Website](2.png)
 
 2. User Filling Upload Form
