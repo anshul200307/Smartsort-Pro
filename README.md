@@ -1,14 +1,14 @@
 # Smartsort-Pro
 SmartSort Pro — AI Powered Document Classifier
 
-📌 Overview
+# 📌 Overview
 
 SmartSort Pro is a serverless AWS project that automatically classifies uploaded documents using AI services like AWS Textract and Amazon Comprehend. The system analyzes files, detects document type, stores them in categorized S3 folders, logs activities in DynamoDB, and sends email notifications using SES.
 
 
 ---
 
-🚀 Features
+# 🚀 Features
 
 AI-based document classification
 
@@ -30,7 +30,7 @@ Fully serverless architecture
 
 ---
 
-🛠️ AWS Services Used
+# 🛠️ AWS Services Used
 
 Amazon S3
 
@@ -52,7 +52,7 @@ IAM
 
 ---
 
-🏗️ Architecture
+# 🏗️ Architecture
 
 User → S3 Website → API Gateway → Lambda
       → Textract & Comprehend
@@ -63,7 +63,7 @@ User → S3 Website → API Gateway → Lambda
 
 ---
 
-📂 Document Categories
+# 📂 Document Categories
 
 text-documents
 
@@ -78,31 +78,38 @@ unknown-documents
 
 ---
 
-📸 Project Workflow Screenshots
+# 📸 Project Workflow Screenshots
 
 
 
 # 1. Website Home Page
 
+
    ![Website](2.png)
 
 # 2. User Filling Upload Form
+
+
 
  ![form filling](1.png)
 
 # 3. File Uploaded in S3 Folder
 
+
  ![s3](invoice.png)
 
 # 4. DynamoDB Audit Log Entry
+
 
  ![Website](dynamodblogs.png)
 
 # 5. Classification Result on Website
 
+
  ![result](result.png)
 
 # 6. Email Notification Received
+
 
 ![email](email.jpeg)
 
