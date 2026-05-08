@@ -65,11 +65,15 @@ User → S3 Website → API Gateway → Lambda
 
 📂 Document Categories
 
-text-documents/
-image-documents/
-pii-documents/
-financial-documents/
-unknown-documents/
+text-documents
+
+image-documents
+
+pii-documents
+
+financial-documents
+
+unknown-documents
 
 
 ---
@@ -79,21 +83,22 @@ unknown-documents/
 Add screenshots of:
 
 1. Website Home Page
+   (1.jpeg)
 
 
-2. User Filling Upload Form
+3. User Filling Upload Form
 
 
-3. File Uploaded in S3 Folder
+4. File Uploaded in S3 Folder
 
 
-4. DynamoDB Audit Log Entry
+5. DynamoDB Audit Log Entry
 
 
-5. Classification Result on Website
+6. Classification Result on Website
 
 
-6. Email Notification Received
+7. Email Notification Received
 
 
 
