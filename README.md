@@ -83,7 +83,7 @@ unknown-documents
 Add screenshots of:
 
 1. Website Home Page
-   (1.jpeg)
+   (1.png)
 
 
 3. User Filling Upload Form
