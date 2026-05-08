@@ -1,13 +1,134 @@
 # Smartsort-Pro
-Smartsort-pro is an ai powered document classifier. Its main function is to classify the document uploaded by the user on smartsort pro website into five categories.
+SmartSort Pro — AI Powered Document Classifier
+
+📌 Overview
+
+SmartSort Pro is a serverless AWS project that automatically classifies uploaded documents using AI services like AWS Textract and Amazon Comprehend. The system analyzes files, detects document type, stores them in categorized S3 folders, logs activities in DynamoDB, and sends email notifications using SES.
 
 
-1- Text documents
+---
 
-2- Financial documents
+🚀 Features
 
-3- Pii documents
+AI-based document classification
 
-4- Image dcouments
+Detects Text, Image, Financial & PII documents
 
-5- Unknown documents
+Text extraction using Textract
+
+PII detection using Comprehend
+
+Email notifications with SES
+
+Audit logging with DynamoDB
+
+Static website hosted on S3
+
+Fully serverless architecture
+
+
+
+---
+
+🛠️ AWS Services Used
+
+Amazon S3
+
+AWS Lambda
+
+Amazon Textract
+
+Amazon Comprehend
+
+Amazon DynamoDB
+
+Amazon SES
+
+Amazon API Gateway
+
+IAM
+
+
+
+---
+
+🏗️ Architecture
+
+User → S3 Website → API Gateway → Lambda
+      → Textract & Comprehend
+      → S3 Classification
+      → DynamoDB Log
+      → SES Email
+
+
+---
+
+📂 Document Categories
+
+text-documents/
+image-documents/
+pii-documents/
+financial-documents/
+unknown-documents/
+
+
+---
+
+📸 Project Workflow Screenshots
+
+Add screenshots of:
+
+1. Website Home Page
+
+
+2. User Filling Upload Form
+
+
+3. File Uploaded in S3 Folder
+
+
+4. DynamoDB Audit Log Entry
+
+
+5. Classification Result on Website
+
+
+6. Email Notification Received
+
+
+
+
+---
+
+⚙️ Tech Stack
+
+Frontend: HTML, CSS, JavaScript
+
+Backend: Python (AWS Lambda)
+
+Cloud: AWS Serverless Services
+
+
+
+---
+
+📈 Learning Outcomes
+
+Serverless Architecture
+
+AWS AI Services
+
+API Integration
+
+Cloud Storage & Automation
+
+Real-world AWS Deployment
+
+
+
+---
+
+👨‍💻 Author
+
+Anshul
+AWS Cloud & Security Enthusiast
